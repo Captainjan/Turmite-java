@@ -1,17 +1,23 @@
 package turmite;
 
+//This class is used to store the grid, on which the turmites move.
 public class Grid {
-    int grid[][];
-    int cmax;
-    int rmax;
-    Grid(int cmax_in, int rmax_in){
-        int cmax=cmax_in;
-        int rmax=rmax_in;
-        grid=new int[rmax_in][rmax_in];
+    //  The actual grid
+    int[][] grid;
+    //  Number of rows in the grid
+    int row;
+    //  Number of columns in the grid
+    int column;
 
-        for(int i=0;i<cmax;i++){
-            for(int j=0;j<rmax;j++){
-                grid[i][j]=0;
+    //  Constructor
+    Grid(int newRow, int newColumn) {
+        row = newRow;
+        column = newColumn;
+        grid = new int[newRow][newColumn];
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                grid[i][j] = 0;
             }
         }
     }

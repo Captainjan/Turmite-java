@@ -1,5 +1,9 @@
 package turmite;
 
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,11 +11,30 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        JFrame frame = new JFrame("Turmite+");
+        JPanel panel = new JPanel();
+
+        JButton loadButton = new JButton("Load save");
+        ActionListener loadButtonClick=new LoadActionListener();
+        loadButton.addActionListener(loadButtonClick);
+
+        JButton button2 = new JButton("New turmite");
+
+
+        frame.add(loadButton, BorderLayout.WEST);
+        frame.add(button2, BorderLayout.EAST);
+        frame.add(panel, BorderLayout.NORTH);
+
+        frame.pack();
+        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+
+
         ArrayList<String> lines = new ArrayList<>();
         Position startpos = new Position(50, 50);
         Turmite thomas = new Turmite(startpos, 0);
 
-        BufferedReader br = new BufferedReader(new FileReader("program.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("turmite.txt"));
         String line;
         while ((line = br.readLine()) != null) {
             lines.add(line);
