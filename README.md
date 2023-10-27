@@ -1,4 +1,4 @@
-# Turmite-java
+# Turmite-plus
 
 A “turmesz” egy 2D Turing-gép (angolul “Turmite”), itt tehát nem egy 1D szalag van, hanem egy 2D rács, amelynek minden cellája 2 állapotú (0 vagy 1). Ebben a programban 2 is lehet, ha akadályt teszünk le. Van egy aktuális pozíció és irány – ez reprezentálható egy hangyával (vagy termesszel). Minden lépésben a hangya az aktuális állapotának és a cella tartalmának megfelelően csinálja a következőket:
 
