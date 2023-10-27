@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class Turmite {
 
     Position currentPosition;
-    int angle;
+    int direction;
     int state;
     ArrayList<Pattern> patterns=new ArrayList<>();
-    Turmite(Position newCurrentPosition, int newAngle, int newState){
+    Turmite(Position newCurrentPosition, int newState){
         currentPosition=newCurrentPosition;
-        angle=newAngle;
+        direction=1;
         state=newState;
     }
     void move(Grid game){
