@@ -17,6 +17,7 @@ public class Turmite {
         direction = 1;
         state = newState;
     }
+    Turmite(){};
 
     void move(Grid game) {
         for (Pattern p : patterns) {
