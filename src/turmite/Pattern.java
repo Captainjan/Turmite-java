@@ -14,4 +14,7 @@ public class Pattern {
         newAntState = d;
         newCellState = e;
     }
+
+    Pattern() {
+    }
 }
