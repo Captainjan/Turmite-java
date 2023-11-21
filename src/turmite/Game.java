@@ -89,7 +89,7 @@ public class Game extends JFrame {
         constraints.gridy++;
 
         JButton addTurmiteButton = new JButton("Add turmite");
-        addTurmiteButton.addActionListener(new newTurmiteActionListener());
+        addTurmiteButton.addActionListener(new NewTurmiteActionListener(this));
         buttonPanel.add(addTurmiteButton, constraints);
         constraints.gridy++;
 
@@ -97,6 +97,7 @@ public class Game extends JFrame {
         constraints.gridy++;
 
         JButton stopButton = new JButton("Stop");
+        stopButton.addActionListener(new stopButtonActionListener());
         buttonPanel.add(stopButton, constraints);
         constraints.gridy++;
 
@@ -115,30 +116,6 @@ public class Game extends JFrame {
                     }
                 }
             }
-        }
-    }
-
-    final class newTurmiteActionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String text = addTurmiteArea.getText();
-            ArrayList<Pattern> newPatterns = new ArrayList<>();
-            String[] lines = text.split("\\R");
-            for (String line : lines) {
-                String[] parts = line.split("-");
-                if (parts.length == 5) {
-                    Pattern newPattern = new Pattern();
-                    newPattern.currentAntState = Integer.parseInt(parts[0]);
-                    newPattern.currentCellState = Integer.parseInt(parts[1]);
-                    newPattern.direction = parts[2].charAt(0);
-                    newPattern.newAntState = Integer.parseInt(parts[3]);
-                    newPattern.newCellState = Integer.parseInt(parts[4]);
-                    newPatterns.add(newPattern);
-                }
-            }
-            Position startPos = new Position(40, 40);
-            turmiteList.add(new Turmite(startPos, 0, newPatterns));
-            latch.countDown();
         }
     }
 
@@ -165,7 +142,7 @@ public class Game extends JFrame {
     }
 
     private void newGame() {
-        gameGrid = new Grid(100, 100);
+        gameGrid = new Grid(80, 80);
     }
 
     private void loadTurmites() {

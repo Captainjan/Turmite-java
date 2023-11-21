@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         Game main = new Game();
 
         try {
@@ -22,9 +22,7 @@ public class Main {
 
         while (!main.stopped && !main.turmiteList.isEmpty()) {
             for (Turmite t : main.turmiteList) {
-                main.changeButtonAtPosition(main.gridPanel, t.currentPosition);
-                t.move(main.gameGrid);
-                System.out.println("x: " + t.currentPosition.x + " " + "y: " + t.currentPosition.y);
+                t.move();
             }
         }
     }

@@ -12,30 +12,47 @@ public class Turmite {
     int state;
     ArrayList<Pattern> patterns = new ArrayList<>();
 
-    Turmite(Position newCurrentPosition, int newState, ArrayList<Pattern> newPatterns) {
+    Game belongsTo;
+
+    Turmite(Position newCurrentPosition, int newState, ArrayList<Pattern> newPatterns, Game input) {
         currentPosition = newCurrentPosition;
         direction = 1;
         state = newState;
         patterns = newPatterns;
+        belongsTo = input;
     }
 
     Turmite() {
     }
 
-    void move(Grid game) {
+    void move() {
+        boolean patternFound = false;
         for (Pattern p : patterns) {
-            if (state == p.currentAntState && game.grid[currentPosition.x][currentPosition.y] == p.currentCellState) {
+            if (state == p.currentAntState && belongsTo.gameGrid.grid[currentPosition.x][currentPosition.y] == p.currentCellState && !patternFound) {
+
+                System.out.println(p);
+                patternFound = true;
                 state = p.newAntState;
-                game.grid[currentPosition.x][currentPosition.y] = p.newCellState;
+
+                System.out.println(state);
+                System.out.println("before " + belongsTo.gameGrid.grid[currentPosition.x][currentPosition.y]);
+
+                belongsTo.gameGrid.grid[currentPosition.x][currentPosition.y] = p.newCellState;
+
+                System.out.println("after " + belongsTo.gameGrid.grid[currentPosition.x][currentPosition.y]);
+
+                belongsTo.changeButtonAtPosition(belongsTo.gridPanel,currentPosition);
+
                 changeDirection(p.direction);
                 Position oldPosition = currentPosition;
+
                 switch (direction) {
                     case 1:
-                        if (currentPosition.x < game.row) {
+                        if (currentPosition.x < belongsTo.gameGrid.row) {
                             currentPosition.x++;
                         }
                     case 2:
-                        if (currentPosition.y < game.column) {
+                        if (currentPosition.y < belongsTo.gameGrid.column) {
                             currentPosition.y++;
                         }
                     case 3:
@@ -47,7 +64,7 @@ public class Turmite {
                             currentPosition.y--;
                         }
                 }
-                if (checkObstacle(game))
+                if (checkObstacle())
                     currentPosition = oldPosition;
             }
         }
@@ -80,8 +97,8 @@ public class Turmite {
         }
     }
 
-    public boolean checkObstacle(Grid game) {
-        return game.grid[currentPosition.x][currentPosition.y] == 3;
+    public boolean checkObstacle() {
+        return belongsTo.gameGrid.grid[currentPosition.x][currentPosition.y] == 3;
     }
 
     void load() throws IOException {

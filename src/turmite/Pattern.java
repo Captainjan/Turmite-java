@@ -17,4 +17,7 @@ public class Pattern {
 
     Pattern() {
     }
+    public String toString(){
+        return currentAntState + "-" + currentCellState + "-" + direction + "-" + newAntState + "-" + newCellState;
+    }
 }
