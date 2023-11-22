@@ -2,11 +2,7 @@ package turmite;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
 
 public class Game extends JFrame {
     Grid gameGrid = new Grid(80, 80);
@@ -17,8 +13,6 @@ public class Game extends JFrame {
     JTextArea addTurmiteArea = new JTextArea(10, 10);
 
     JPanel gridPanel = new JPanel(new GridBagLayout());
-
-    JComboBox<Button> menu;
 
     Game() {
         super("Turmite+");
@@ -32,14 +26,14 @@ public class Game extends JFrame {
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         addButtonComponents(buttonPanel);
 
-        constraints.gridx = 0;
+        constraints.gridx = 1;
         constraints.gridy = 0;
         constraints.weightx = 1.0;
         constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
         mainPanel.add(gridPanel, constraints);
 
-        constraints.gridx = 1;
+        constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.weightx = 0.0;
         constraints.weighty = 1.0;
@@ -79,20 +73,12 @@ public class Game extends JFrame {
         constraints.gridx = 0;
         constraints.gridy = 0;
 
-
-        JButton loadButton = new JButton("Load save");
-        loadButton.addActionListener(new LoadActionListener(this));
-        buttonPanel.add(loadButton, constraints);
-        constraints.gridy++;
-
-        JButton saveButton = new JButton("Save game");
-        saveButton.addActionListener(new SaveActionListener(this));
-        buttonPanel.add(saveButton, constraints);
-        constraints.gridy++;
-
-        JButton newGameButton = new JButton("New game");
-        newGameButton.addActionListener(new NewGameActionListener());
-        buttonPanel.add(newGameButton, constraints);
+        JComboBox<String> Menu = new JComboBox<>();
+        Menu.addItem("New game");
+        Menu.addItem("Load game");
+        Menu.addItem("Save game");
+        Menu.addActionListener(new ComboBoxActionListener(this,Menu));
+        buttonPanel.add(Menu);
         constraints.gridy++;
 
         JButton addTurmiteButton = new JButton("Add turmite");
@@ -104,7 +90,7 @@ public class Game extends JFrame {
         constraints.gridy++;
 
         JButton stopButton = new JButton("Stop");
-        stopButton.addActionListener(new stopButtonActionListener());
+        stopButton.addActionListener(new StopActionListener(this));
         buttonPanel.add(stopButton, constraints);
         constraints.gridy++;
 
@@ -128,35 +114,14 @@ public class Game extends JFrame {
         }
     }
 
-    final class NewGameActionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            newGame();
-        }
-    }
-
-    final class stopButtonActionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (stopped) {
-                stopped = false;
-                System.out.println("Go");
-            } else {
-                stopped = true;
-                System.out.println("Stop");
-            }
-
-        }
-    }
-
-    private void newGame() {
+    public void newGame() {
+        System.out.println("In function");
         gameGrid = new Grid(80, 80);
-        turmiteList = new ArrayList<>();
+        turmiteList.clear();
         stopped = false;
         this.remove(gridPanel);
         gridPanel.removeAll();
         addGridComponents();
-
         this.revalidate();
         this.repaint();
     }
@@ -182,25 +147,6 @@ public class Game extends JFrame {
         }
         revalidate();
         repaint();
-    }
-    public void turmiteMeet(){
-        for(Turmite t : turmiteList){
-            for(Turmite z : turmiteList){
-                if(t.currentPosition == z.currentPosition){
-                    if(t.state == z.state){
-                        t.reverse();
-                        z.reverse();
-                    }
-                    else{
-//                        if(t.state == 1){
-//                            turmiteList.remove(z);
-//                        } else{
-//                            turmiteList.remove(t);
-//                        }
-                    }
-                }
-            }
-        }
     }
 
 }
