@@ -1,25 +1,25 @@
 package turmite;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Game main = new Game();
 
-
-
-        while (!main.stopped /* && !main.turmiteList.isEmpty()*/) {
-            if (main.latch.getCount() == 1){
-                try {
-                    main.latch.await();
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                    System.out.println("Interrupted while waiting for the newTurmiteActionListener to finish");
+        Thread movementThread = new Thread(() -> {
+            try {
+                while (true) {
+                    if (!main.stopped && !main.turmiteList.isEmpty()) {
+                        for (Turmite t : main.turmiteList) {
+                            t.move();
+                            System.out.println("I moved" + t.currentPosition);
+                        }
+                    }
+                    Thread.sleep(1000);
                 }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            for (Turmite t : main.turmiteList) {
-            t.move();
-            }
-            Thread.sleep(1000);
-        }
+        });
+        movementThread.start();
     }
 }
 

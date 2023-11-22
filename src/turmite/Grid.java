@@ -1,7 +1,9 @@
 package turmite;
 
+import java.io.Serializable;
+
 //This class is used to store the grid, on which the turmites move.
-public class Grid {
+public class Grid implements Serializable {
     //  The actual grid
     int[][] grid;
     //  Number of rows in the grid

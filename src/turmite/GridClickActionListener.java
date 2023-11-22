@@ -19,7 +19,7 @@ public class GridClickActionListener implements ActionListener {
     public void actionPerformed(ActionEvent e){
         if(button.getBackground() != Color.RED){
             button.setBackground(Color.RED);
-            grid.setAtPosition(button.p,3);
+            grid.setAtPosition(button.p,2);
         } else{
             button.setBackground(Color.BLACK);
             grid.setAtPosition(button.p,0);

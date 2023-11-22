@@ -1,6 +1,8 @@
 package turmite;
 
-public class Pattern {
+import java.io.Serializable;
+
+public class Pattern implements Serializable {
     int currentAntState;
     int currentCellState;
     char direction;

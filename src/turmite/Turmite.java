@@ -1,18 +1,14 @@
 package turmite;
 
-import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Turmite {
+public class Turmite implements Serializable {
     Position currentPosition;
     int direction;
     int state;
     ArrayList<Pattern> patterns = new ArrayList<>();
-
-    Game belongsTo;
+    transient Game belongsTo;
 
     Turmite(Position newCurrentPosition, int newState, ArrayList<Pattern> newPatterns, Game input) {
         currentPosition = newCurrentPosition;
@@ -30,17 +26,17 @@ public class Turmite {
         for (Pattern p : patterns) {
             if (state == p.currentAntState && belongsTo.gameGrid.getAtPosition(currentPosition) == p.currentCellState && !patternFound) {
 
-                System.out.println(p);
+//                System.out.println(p);
                 patternFound = true;
 
                 state = p.newAntState;
-                System.out.println(state);
+//                System.out.println(state);
 
-                System.out.println("before " + belongsTo.gameGrid.getAtPosition(currentPosition));
+//                System.out.println("before " + belongsTo.gameGrid.getAtPosition(currentPosition));
                 belongsTo.gameGrid.setAtPosition(currentPosition, p.newCellState);
-                System.out.println("after " + belongsTo.gameGrid.getAtPosition(currentPosition));
+//                System.out.println("after " + belongsTo.gameGrid.getAtPosition(currentPosition));
 
-                belongsTo.changeButtonAtPosition(belongsTo.gridPanel, currentPosition);
+                belongsTo.changeButtonAtPosition(currentPosition);
 
                 changeDirection(p.direction);
                 Position oldPosition = currentPosition;
@@ -100,6 +96,13 @@ public class Turmite {
 
     public boolean checkObstacle() {
         return belongsTo.gameGrid.getAtPosition(currentPosition) == 3;
+    }
+    public void reverse(){
+        if(direction == 1 || direction == 2){
+            direction = direction + 2;
+        } else{
+            direction = direction - 2;
+        }
     }
 
 }

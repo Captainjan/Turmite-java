@@ -29,7 +29,6 @@ public class NewTurmiteActionListener implements ActionListener {
         }
         Position startPos = new Position(40, 40);
         game.turmiteList.add(new Turmite(startPos, 0, newPatterns, game));
-        game.latch.countDown();
     }
 
 }

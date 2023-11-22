@@ -8,9 +8,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
-public class Game extends JFrame implements Serializable {
+public class Game extends JFrame {
     Grid gameGrid = new Grid(80, 80);
-    ArrayList<Turmite> turmiteList = new ArrayList<>();
+    public ArrayList<Turmite> turmiteList = new ArrayList<>();
 
     boolean stopped = false;
 
@@ -18,7 +18,7 @@ public class Game extends JFrame implements Serializable {
 
     JPanel gridPanel = new JPanel(new GridBagLayout());
 
-    CountDownLatch latch = new CountDownLatch(1);
+    JComboBox<Button> menu;
 
     Game() {
         super("Turmite+");
@@ -27,7 +27,7 @@ public class Game extends JFrame implements Serializable {
         JPanel mainPanel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
-        addGridComponents(gridPanel);
+        addGridComponents();
 
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         addButtonComponents(buttonPanel);
@@ -51,7 +51,7 @@ public class Game extends JFrame implements Serializable {
         this.setVisible(true);
     }
 
-    private void addGridComponents(JPanel gridPanel) {
+    public void addGridComponents() {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 1.0;
@@ -81,8 +81,13 @@ public class Game extends JFrame implements Serializable {
 
 
         JButton loadButton = new JButton("Load save");
-//        loadButton.addActionListener(new LoadActionListener());
+        loadButton.addActionListener(new LoadActionListener(this));
         buttonPanel.add(loadButton, constraints);
+        constraints.gridy++;
+
+        JButton saveButton = new JButton("Save game");
+        saveButton.addActionListener(new SaveActionListener(this));
+        buttonPanel.add(saveButton, constraints);
         constraints.gridy++;
 
         JButton newGameButton = new JButton("New game");
@@ -105,27 +110,23 @@ public class Game extends JFrame implements Serializable {
 
     }
 
-    public void changeButtonAtPosition(JPanel gridPanel, Position p) {
+    public void changeButtonAtPosition(Position p) {
         Component[] components = gridPanel.getComponents();
         for (Component component : components) {
             if (component instanceof JButton button) {
                 GridBagConstraints gbc = ((GridBagLayout) gridPanel.getLayout()).getConstraints(button);
                 if (gbc.gridx == p.y && gbc.gridy == p.x) {
-                    if (button.getBackground() == Color.BLACK && gameGrid.getAtPosition(p) == 1) {
+                    if (button.getBackground() != Color.WHITE && gameGrid.getAtPosition(p) == 1) {
                         button.setBackground(Color.WHITE);
-                    } else if (button.getBackground() == Color.WHITE && gameGrid.getAtPosition(p) == 0) {
+                    } else if (button.getBackground() != Color.BLACK && gameGrid.getAtPosition(p) == 0) {
                         button.setBackground(Color.BLACK);
+                    } else if (button.getBackground() != Color.RED && gameGrid.getAtPosition(p) == 2) {
+                        button.setBackground(Color.RED);
                     }
                 }
             }
         }
     }
-
-//    final class LoadActionListener implements ActionListener {
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//        }
-//    }
 
     final class NewGameActionListener implements ActionListener {
         @Override
@@ -137,7 +138,14 @@ public class Game extends JFrame implements Serializable {
     final class stopButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            stopped = !stopped;
+            if (stopped) {
+                stopped = false;
+                System.out.println("Go");
+            } else {
+                stopped = true;
+                System.out.println("Stop");
+            }
+
         }
     }
 
@@ -147,12 +155,52 @@ public class Game extends JFrame implements Serializable {
         stopped = false;
         this.remove(gridPanel);
         gridPanel.removeAll();
-        addGridComponents(gridPanel);
+        addGridComponents();
 
         this.revalidate();
         this.repaint();
+    }
 
-        latch = new CountDownLatch(1);
+    public void reloadGrid() {
+        remove(gridPanel);
+        gridPanel.removeAll();
+        addGridComponents();
+
+        Component[] components = gridPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JButton button) {
+                GridBagConstraints gbc = ((GridBagLayout) gridPanel.getLayout()).getConstraints(button);
+                Position p = new Position(gbc.gridx, gbc.gridy);
+                if (gameGrid.getAtPosition(p) == 1) {
+                    button.setBackground(Color.WHITE);
+                } else if (gameGrid.getAtPosition(p) == 0) {
+                    button.setBackground(Color.BLACK);
+                } else if (gameGrid.getAtPosition(p) == 2) {
+                    button.setBackground(Color.RED);
+                }
+            }
+        }
+        revalidate();
+        repaint();
+    }
+    public void turmiteMeet(){
+        for(Turmite t : turmiteList){
+            for(Turmite z : turmiteList){
+                if(t.currentPosition == z.currentPosition){
+                    if(t.state == z.state){
+                        t.reverse();
+                        z.reverse();
+                    }
+                    else{
+//                        if(t.state == 1){
+//                            turmiteList.remove(z);
+//                        } else{
+//                            turmiteList.remove(t);
+//                        }
+                    }
+                }
+            }
+        }
     }
 
 }
