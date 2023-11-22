@@ -21,4 +21,10 @@ public class Grid {
             }
         }
     }
+    public int getAtPosition(Position input){
+        return grid[input.x][input.y];
+    }
+    public void setAtPosition(Position input, int set){
+        grid[input.x][input.y] = set;
+    }
 }

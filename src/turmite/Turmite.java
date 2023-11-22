@@ -28,20 +28,19 @@ public class Turmite {
     void move() {
         boolean patternFound = false;
         for (Pattern p : patterns) {
-            if (state == p.currentAntState && belongsTo.gameGrid.grid[currentPosition.x][currentPosition.y] == p.currentCellState && !patternFound) {
+            if (state == p.currentAntState && belongsTo.gameGrid.getAtPosition(currentPosition) == p.currentCellState && !patternFound) {
 
                 System.out.println(p);
                 patternFound = true;
+
                 state = p.newAntState;
-
                 System.out.println(state);
-                System.out.println("before " + belongsTo.gameGrid.grid[currentPosition.x][currentPosition.y]);
 
-                belongsTo.gameGrid.grid[currentPosition.x][currentPosition.y] = p.newCellState;
+                System.out.println("before " + belongsTo.gameGrid.getAtPosition(currentPosition));
+                belongsTo.gameGrid.setAtPosition(currentPosition, p.newCellState);
+                System.out.println("after " + belongsTo.gameGrid.getAtPosition(currentPosition));
 
-                System.out.println("after " + belongsTo.gameGrid.grid[currentPosition.x][currentPosition.y]);
-
-                belongsTo.changeButtonAtPosition(belongsTo.gridPanel,currentPosition);
+                belongsTo.changeButtonAtPosition(belongsTo.gridPanel, currentPosition);
 
                 changeDirection(p.direction);
                 Position oldPosition = currentPosition;
@@ -64,8 +63,10 @@ public class Turmite {
                             currentPosition.y--;
                         }
                 }
-                if (checkObstacle())
+                if (checkObstacle()) {
+                    System.out.println("Obstacle!");
                     currentPosition = oldPosition;
+                }
             }
         }
     }
@@ -98,11 +99,7 @@ public class Turmite {
     }
 
     public boolean checkObstacle() {
-        return belongsTo.gameGrid.grid[currentPosition.x][currentPosition.y] == 3;
+        return belongsTo.gameGrid.getAtPosition(currentPosition) == 3;
     }
 
-    void load() throws IOException {
-
-        JOptionPane.showMessageDialog(null, "File loaded");
-    }
 }
