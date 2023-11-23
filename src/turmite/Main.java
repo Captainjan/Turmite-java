@@ -1,5 +1,7 @@
 package turmite;
 
+import java.awt.*;
+
 public class Main {
     public static void main(String[] args) {
         Game main = new Game();
@@ -10,10 +12,11 @@ public class Main {
                     if (!main.stopped && !main.turmiteList.isEmpty()) {
                         for (Turmite t : main.turmiteList) {
                             t.move();
-                            System.out.println("I moved" + t.currentPosition);
+                            main.indicateTurmite(t.currentPosition);
+                            System.out.println("I moved" + " " + t.currentPosition);
                         }
                     }
-                    Thread.sleep(1000);
+                    Thread.sleep(main.speed);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

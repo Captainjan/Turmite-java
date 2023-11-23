@@ -24,7 +24,6 @@ public class NewTurmiteActionListener implements ActionListener {
                 newPattern.newAntState = Integer.parseInt(parts[3]);
                 newPattern.newCellState = Integer.parseInt(parts[4]);
                 newPatterns.add(newPattern);
-
             }
         }
         Position startPos = new Position(40, 40);

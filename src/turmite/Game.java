@@ -14,9 +14,13 @@ public class Game extends JFrame {
 
     JPanel gridPanel = new JPanel(new GridBagLayout());
 
+    int speed;
+
     Game() {
         super("Turmite+");
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+
+        speed = 500;
 
         JPanel mainPanel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -59,7 +63,7 @@ public class Game extends JFrame {
                 gridButton.setPreferredSize(new Dimension(10, 10));
                 gridButton.setBackground(Color.BLACK);
                 gridButton.setOpaque(true);
-                gridButton.addActionListener(new GridClickActionListener(this.gameGrid, gridButton));
+                gridButton.addActionListener(new GridClickActionListener(this.gameGrid));
 
                 constraints.gridx = col;
                 constraints.gridy = row;
@@ -89,11 +93,19 @@ public class Game extends JFrame {
         buttonPanel.add(addTurmiteArea, constraints);
         constraints.gridy++;
 
+        JSlider animSpeed = new JSlider(JSlider.HORIZONTAL,0,1000,500);
+        animSpeed.setMajorTickSpacing(250);
+        animSpeed.setMinorTickSpacing(100);
+        animSpeed.setPaintTicks(true);
+        animSpeed.setPaintLabels(true);
+        animSpeed.addChangeListener(new SliderListener(this));
+        buttonPanel.add(animSpeed,constraints);
+        constraints.gridy++;
+
         JButton stopButton = new JButton("Stop");
         stopButton.addActionListener(new StopActionListener(this));
         buttonPanel.add(stopButton, constraints);
         constraints.gridy++;
-
     }
 
     public void changeButtonAtPosition(Position p) {
@@ -114,8 +126,19 @@ public class Game extends JFrame {
         }
     }
 
+    public void indicateTurmite(Position p){
+        Component[] components = gridPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JButton button) {
+                GridBagConstraints gbc = ((GridBagLayout) gridPanel.getLayout()).getConstraints(button);
+                if (gbc.gridx == p.y && gbc.gridy == p.x) {
+                    button.setBackground(Color.GREEN);
+                }
+            }
+        }
+    }
+
     public void newGame() {
-        System.out.println("In function");
         gameGrid = new Grid(80, 80);
         turmiteList.clear();
         stopped = false;
