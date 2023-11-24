@@ -2,16 +2,26 @@ package turmite;
 
 import java.io.Serializable;
 
-//This class is used to store the grid, on which the turmites move.
+/**
+ * This class is used to store the grid, on which the turmites move.
+ */
 public class Grid implements Serializable {
-    //  The actual grid
+    /**
+     *  2D grid where the turmites move.
+     */
     int[][] grid;
-    //  Number of rows in the grid
+    /**
+     * Number of rows in the grid.
+     */
     int row;
-    //  Number of columns in the grid
+    /**
+     * Number of columns in the grid.
+     */
     int column;
 
-    //  Constructor
+    /**
+     * Creates a grid with the given row and column parameters and sets the values to be 0.
+     */
     Grid(int newRow, int newColumn) {
         row = newRow;
         column = newColumn;
@@ -23,9 +33,16 @@ public class Grid implements Serializable {
             }
         }
     }
+    /**
+     * Returns the value of the grid at the given position.
+     */
     public int getAtPosition(Position input){
         return grid[input.x][input.y];
     }
+
+    /**
+     * Sets the value of the grid at the given position to the given int value.
+     */
     public void setAtPosition(Position input, int set){
         grid[input.x][input.y] = set;
     }

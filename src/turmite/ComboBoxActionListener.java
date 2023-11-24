@@ -41,7 +41,7 @@ public class ComboBoxActionListener implements ActionListener {
                     game.turmiteList = (ArrayList<Turmite>) turmiteIn.readObject();
 
                     for (Turmite t : game.turmiteList) {
-                        t.belongsTo = game;
+                        t.game = game;
                     }
                     game.stopped = false;
 

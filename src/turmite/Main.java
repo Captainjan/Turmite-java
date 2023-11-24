@@ -1,7 +1,5 @@
 package turmite;
 
-import java.awt.*;
-
 public class Main {
     public static void main(String[] args) {
         Game main = new Game();
@@ -13,6 +11,7 @@ public class Main {
                         for (Turmite t : main.turmiteList) {
                             t.move();
                             main.indicateTurmite(t.currentPosition);
+                            main.checkOverlap(t);
                             System.out.println("I moved" + " " + t.currentPosition);
                         }
                     }
