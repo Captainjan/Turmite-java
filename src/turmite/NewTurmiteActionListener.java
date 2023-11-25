@@ -11,23 +11,24 @@ public class NewTurmiteActionListener implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        String text = game.addTurmiteArea.getText();
-        ArrayList<Pattern> newPatterns = new ArrayList<>();
-        String[] lines = text.split("\\R");
-        for (String line : lines) {
-            String[] parts = line.split("-");
-            if (parts.length == 5) {
-                Pattern newPattern = new Pattern();
-                newPattern.currentAntState = Integer.parseInt(parts[0]);
-                newPattern.currentCellState = Integer.parseInt(parts[1]);
-                newPattern.direction = parts[2].charAt(0);
-                newPattern.newCellState = Integer.parseInt(parts[3]);
-                newPattern.newAntState = Integer.parseInt(parts[4]);
-                newPatterns.add(newPattern);
+        if (game.stopped) {
+            String text = game.addTurmiteArea.getText();
+            ArrayList<Pattern> newPatterns = new ArrayList<>();
+            String[] lines = text.split("\\R");
+            for (String line : lines) {
+                String[] parts = line.split("-");
+                if (parts.length == 5) {
+                    Pattern newPattern = new Pattern();
+                    newPattern.currentAntState = Integer.parseInt(parts[0]);
+                    newPattern.currentCellState = Integer.parseInt(parts[1]);
+                    newPattern.direction = parts[2].charAt(0);
+                    newPattern.newCellState = Integer.parseInt(parts[3]);
+                    newPattern.newAntState = Integer.parseInt(parts[4]);
+                    newPatterns.add(newPattern);
+                }
             }
+            Position startPos = new Position(40, 40);
+            game.turmiteList.add(new Turmite(startPos, 0, newPatterns, game));
         }
-        Position startPos = new Position(40, 40);
-        game.turmiteList.add(new Turmite(startPos, 0, newPatterns, game));
     }
-
 }

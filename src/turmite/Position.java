@@ -12,9 +12,9 @@ public class Position implements Serializable {
     /**
      * Basic constructor that sets the given coordinates.
      */
-    Position(int x_in, int y_in) {
-        x = x_in;
-        y = y_in;
+    Position(int xInput, int yInput) {
+        x = xInput;
+        y = yInput;
     }
 
     /**

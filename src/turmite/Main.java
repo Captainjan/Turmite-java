@@ -3,7 +3,6 @@ package turmite;
 public class Main {
     public static void main(String[] args) {
         Game main = new Game();
-
         Thread movementThread = new Thread(() -> {
             try {
                 while (true) {

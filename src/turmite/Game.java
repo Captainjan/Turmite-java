@@ -19,7 +19,7 @@ public class Game extends JFrame {
     /**
      * Indicates if the simulation is running or not
      */
-    boolean stopped = false;
+    boolean stopped = true;
     /**
      * Textarea where the patterns for the turmite can be given.
      */
@@ -35,7 +35,7 @@ public class Game extends JFrame {
     int speed;
 
     /**
-     * Constructor for the Game class. Creates the graphical Frame, the panels with the needed orientation in the frame.
+     * Constructor for the Game class. Creates the graphical frame, the panels with the needed orientation in the frame.
      */
     Game() {
         super("Turmite+");
@@ -72,7 +72,7 @@ public class Game extends JFrame {
 
     /**
      * Sets the graphical grid up with buttons and sets them to be black to indicate their state.
-     * Black meaning the cell's state is 0.
+     * Black meaning the cell's state is 0. It also adds the ActionListener for placing/removing obstacles.
      */
     public void addGridComponents() {
         GridBagConstraints constraints = new GridBagConstraints();
@@ -97,6 +97,10 @@ public class Game extends JFrame {
         }
     }
 
+    /**
+     * Adds the Combobox with options for new game/saving/loading, adds the button for adding new turmites and a
+     * start/stop button.
+     */
     private void addButtonComponents(JPanel buttonPanel) {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0;
@@ -118,7 +122,7 @@ public class Game extends JFrame {
         buttonPanel.add(addTurmiteArea, constraints);
         constraints.gridy++;
 
-        JSlider animSpeed = new JSlider(JSlider.HORIZONTAL, 0, 1000, 500);
+        JSlider animSpeed = new JSlider(SwingConstants.HORIZONTAL, 0, 1000, 500);
         animSpeed.setMajorTickSpacing(250);
         animSpeed.setMinorTickSpacing(100);
         animSpeed.setPaintTicks(true);
@@ -133,6 +137,11 @@ public class Game extends JFrame {
         constraints.gridy++;
     }
 
+    /**
+     * Changes the graphical cell at the given position to the colour it should be based on the logical grid.
+     * White meaning the state is 1, Black meaning the state is 0 and Red meaning there is an obstacle which has a
+     * value of 2. It gets the graphical position using the constraints of the GridBagLayout.
+     */
     public void changeButtonAtPosition(Position p) {
         Component[] components = gridPanel.getComponents();
         for (Component component : components) {
@@ -151,6 +160,10 @@ public class Game extends JFrame {
         }
     }
 
+    /**
+     * Inidicates a turmite at the given position with the colour green. It gets the graphical position using the
+     * constraints of the GridBagLayout.
+     */
     public void indicateTurmite(Position p) {
         Component[] components = gridPanel.getComponents();
         for (Component component : components) {
@@ -163,10 +176,14 @@ public class Game extends JFrame {
         }
     }
 
+    /**
+     * Resets the logical and the graphical grid to the starting states. It does this by creating a new grid,
+     * clearing the turmiteList, removing the gridPanel and readding it with the starting parameters.
+     */
     public void newGame() {
         gameGrid = new Grid(80, 80);
         turmiteList.clear();
-        stopped = false;
+        stopped = true;
         this.remove(gridPanel);
         gridPanel.removeAll();
         addGridComponents();
@@ -174,6 +191,10 @@ public class Game extends JFrame {
         this.repaint();
     }
 
+    /**
+     * Reloads the graphical grid. It does this by removing the gridPanel from the frame and then coloring
+     * it based on the logical grid.
+     */
     public void reloadGrid() {
         remove(gridPanel);
         gridPanel.removeAll();
@@ -183,7 +204,7 @@ public class Game extends JFrame {
         for (Component component : components) {
             if (component instanceof JButton button) {
                 GridBagConstraints gbc = ((GridBagLayout) gridPanel.getLayout()).getConstraints(button);
-                Position p = new Position(gbc.gridx, gbc.gridy);
+                Position p = new Position(gbc.gridy, gbc.gridx);
                 if (gameGrid.getAtPosition(p) == 1) {
                     button.setBackground(Color.WHITE);
                 } else if (gameGrid.getAtPosition(p) == 0) {
@@ -197,6 +218,13 @@ public class Game extends JFrame {
         repaint();
     }
 
+    /**
+     * Checks is the given turmite overlaps with any of the other turmites. If it does then two things may happen.
+     * If the states are different then the index of the one with 0 gets added to an ArrayList. If their indexes are
+     * the same then their direction gets reversed. After the for loop the turmites that had their indexes put in the
+     * ArrayList get removed. The reason why they are not deleted in the main for loop is that when they get removed
+     * they are shifted and this would cause problems while running the for loop.
+     */
     public void checkOverlap(Turmite input) {
         ArrayList<Integer> toRemove = new ArrayList<>();
         for (int i = 0; i < turmiteList.size(); i++) {
@@ -214,9 +242,9 @@ public class Game extends JFrame {
                 }
             }
         }
-        for(Integer i : toRemove){
-            System.out.println(turmiteList.get(i).currentPosition + " Eaten" );
-            turmiteList.remove((int)i);
+        for (Integer i : toRemove) {
+            System.out.println(turmiteList.get(i).currentPosition + " Eaten");
+            turmiteList.remove((int) i);
         }
     }
 }

@@ -5,10 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GridClickActionListener implements ActionListener {
-
     Grid grid;
-
-
     GridClickActionListener(Grid gridInput){
         grid = gridInput;
     }
