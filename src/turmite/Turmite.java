@@ -52,7 +52,7 @@ public class Turmite implements Serializable {
         boolean patternFound = false;
         game.changeColorAtPosition(currentPosition);
         for (int i = 0; i < patterns.size() && !patternFound; i++) {
-            if (checkStates(patterns.get(i)) && !patternFound) {
+            if (checkStates(patterns.get(i))) {
                 patternFound = true;
                 System.out.println(patterns.get(i));
 
