@@ -50,7 +50,7 @@ public class Turmite implements Serializable {
      */
     void move() {
         boolean patternFound = false;
-        game.changeButtonAtPosition(currentPosition);
+        game.changeColorAtPosition(currentPosition);
         for (int i = 0; i < patterns.size() && !patternFound; i++) {
             if (checkStates(patterns.get(i)) && !patternFound) {
                 patternFound = true;
@@ -58,7 +58,7 @@ public class Turmite implements Serializable {
 
                 state = patterns.get(i).newAntState;
                 game.gameGrid.setAtPosition(currentPosition, patterns.get(i).newCellState);
-                game.changeButtonAtPosition(currentPosition);
+                game.changeColorAtPosition(currentPosition);
 
                 changeDirection(patterns.get(i).direction);
                 Position oldPosition = new Position(currentPosition.x, currentPosition.y);

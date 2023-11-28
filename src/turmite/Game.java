@@ -34,6 +34,8 @@ public class Game extends JFrame {
      */
     int speed;
 
+    JButton stopButton = new JButton("Start/Stop");
+
     /**
      * Constructor for the Game class. Creates the graphical frame, the panels with the needed orientation in the frame.
      */
@@ -131,7 +133,7 @@ public class Game extends JFrame {
         buttonPanel.add(animSpeed, constraints);
         constraints.gridy++;
 
-        JButton stopButton = new JButton("Start/Stop");
+        stopButton.setBackground(Color.RED);
         stopButton.addActionListener(new StopActionListener(this));
         buttonPanel.add(stopButton, constraints);
         constraints.gridy++;
@@ -142,7 +144,7 @@ public class Game extends JFrame {
      * White meaning the state is 1, Black meaning the state is 0 and Red meaning there is an obstacle which has a
      * value of 2. It gets the graphical position using the constraints of the GridBagLayout.
      */
-    public void changeButtonAtPosition(Position p) {
+    public void changeColorAtPosition(Position p) {
         Component[] components = gridPanel.getComponents();
         for (Component component : components) {
             if (component instanceof JButton button) {
@@ -247,4 +249,59 @@ public class Game extends JFrame {
             turmiteList.remove((int) i);
         }
     }
+
+    /**
+     * Creates a new turmite to be added to the TurmiteList. Splits the input of the Textarea at the line breaks
+     * and then with by the dashes. Creates a new list of patterns but only creates the new turmite if the patterns
+     * are valid. The new turmite will be spawned at the (40,40) position.
+     */
+    public void newTurmite(){
+        if (stopped) {
+            String text = addTurmiteArea.getText();
+            System.out.println(text);
+            ArrayList<Pattern> newPatterns = new ArrayList<>();
+            String[] lines = text.split("\\R");
+            boolean valid = true;
+            for (String line : lines) {
+                String[] parts = line.split("-");
+                if (parts.length == 5) {
+                    Pattern newPattern = new Pattern();
+                    newPattern.currentAntState = Integer.parseInt(parts[0]);
+                    newPattern.currentCellState = Integer.parseInt(parts[1]);
+                    newPattern.direction = parts[2].charAt(0);
+                    newPattern.newCellState = Integer.parseInt(parts[3]);
+                    newPattern.newAntState = Integer.parseInt(parts[4]);
+                    if(newPattern.checkPatternValidity()){
+                        newPatterns.add(newPattern);
+                    } else{
+                        valid = false;
+                    }
+                } else{
+                    valid = false;
+                }
+            }
+            Position startPos = new Position(40, 40);
+            if(valid){
+                turmiteList.add(new Turmite(startPos, 0, newPatterns, this));
+            }
+        }
+    }
+
+    /**
+     * Returns the color of the graphical cell at the given position. It finds the graphical cell's position by using
+     * the GridBagLayout's constraints.
+     */
+    Color getColorAtPosition(Position p){
+        Component[] components = gridPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JButton button) {
+                GridBagConstraints gbc = ((GridBagLayout) gridPanel.getLayout()).getConstraints(button);
+                if (gbc.gridx == p.y && gbc.gridy == p.x) {
+                    return button.getBackground();
+                }
+            }
+        }
+        return null;
+    }
+
 }

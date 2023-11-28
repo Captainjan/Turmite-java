@@ -9,6 +9,10 @@ public class GridClickActionListener implements ActionListener {
     GridClickActionListener(Grid gridInput){
         grid = gridInput;
     }
+
+    /**
+     * Sets an obstacle or removes an obstacle on the graphical and logical grid.
+     */
     @Override
     public void actionPerformed(ActionEvent e){
         GridButton button = (GridButton) e.getSource();

@@ -18,6 +18,12 @@ public class ComboBoxActionListener implements ActionListener {
         game = gameInput;
     }
 
+    /**
+     * Loads, saves, creates a game based on the option that is selected. If its new game then it calls the
+     * new game function of the Game class. If Load is selected then using an InputStream from grid.txt and turmite.txt
+     * it loads the list of turmites and the grid. If Save is selected then by using an OutputStream it saves the
+     * same things. It can do this since the said objects are serializable. Throws exceptions when an error occured.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (game.stopped) {

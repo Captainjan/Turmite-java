@@ -11,6 +11,9 @@ public class SliderListener implements ChangeListener {
         game = gameInput;
     }
 
+    /**
+     * Sets the speed of the simulation with the slider's current value.
+     */
     public void stateChanged(ChangeEvent e){
         JSlider slider = (JSlider)e.getSource();
         if(!slider.getValueIsAdjusting()){

@@ -23,4 +23,10 @@ public class Position implements Serializable {
     public String toString(){
         return "Row: " + x + "Column: " + y;
     }
+    @Override
+    public boolean equals(Object o){
+        if(o == null || getClass() != o.getClass()) return false;
+        Position p = (Position) o;
+        return this.x == p.x && this.y == p.y;
+    }
 }
